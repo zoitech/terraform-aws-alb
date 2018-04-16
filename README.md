@@ -90,8 +90,27 @@ The following determines what kind of listener(s) will be applied to the load ba
 
 ```hcl
   lb_http_listener = true #default = true
-  lb_https_listener = true #default = false
+  *lb_https_listener = true #default = false
 ```
+#### * HTTPS Offloading
+To enable offloading from HTTPS to HTTP set the following parameter "lb_https_offloading" to "true":
+
+
+```hcl
+  lb_https_listener   = true #default = false
+  lb_https_offloading = true #default = false
+```
+The following parameters need to be set:
+* http_target_group_names
+* http_target_group_ports
+* https_host_headers
+
+The following parameters need **not** be set as the HTTP counterparts are used instead:
+* https_target_group_names
+* https_target_group_ports
+
+
+
 #### Load Balancer Listener Ports
 HTTP/HTTPS listener port of the load balancer depending on what kind of listener(s) are selected:
 ```hcl
