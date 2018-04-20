@@ -90,8 +90,27 @@ The following determines what kind of listener(s) will be applied to the load ba
 
 ```hcl
   lb_http_listener = true #default = true
-  lb_https_listener = true #default = false
+  *lb_https_listener = true #default = false
 ```
+#### * HTTPS Offloading
+To enable offloading from HTTPS to HTTP set the following parameter "lb_https_offloading" to "true":
+
+
+```hcl
+  lb_https_listener   = true #default = false
+  lb_https_offloading = true #default = false
+```
+The following parameters need to be set:
+* http_target_group_names
+* http_target_group_ports
+* https_host_headers
+
+The following parameters need **not** be set as the HTTP counterparts are used instead:
+* https_target_group_names
+* https_target_group_ports
+
+
+
 #### Load Balancer Listener Ports
 HTTP/HTTPS listener port of the load balancer depending on what kind of listener(s) are selected:
 ```hcl
@@ -185,7 +204,37 @@ Can be set when there is a standard naming convention in use. They are applied t
   prefix = "P-"
   suffix = "-HR"
 ```
+#### Outputs
+The following outputs are possible:
+* lb_name  (The name of the LB)
+* lb_arn (The ARN of the load balancer)
+* lb_arn_suffix (The ARN suffix for use with CloudWatch Metrics)
+* lb_dns_name (The DNS name of the load balancer)
+* lb_zone_id (The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record))
 
+Example usage:
+```hcl
+#The name of the LB
+output "lb_name" {
+  value = "${module.alb.lb_name}"
+}
+#The ARN of the load balancer
+output "lb_arn" {
+  value = "${module.alb.lb_arn}"
+}
+#The ARN suffix for use with CloudWatch Metrics
+output "lb_arn_suffix" {
+  value = "${module.alb.lb_arn_suffix}"
+}
+#The DNS name of the load balancer
+output "lb_dns_name" {
+  value = "${module.alb.lb_dns_name}"
+}
+#The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record)
+output "lb_zone_id" {
+  value = "${module.alb.lb_zone_id}"
+}
+```
 
 
 

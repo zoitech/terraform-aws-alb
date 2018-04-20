@@ -96,6 +96,12 @@ variable "lb_https_listener" {
   default     = false
 }
 
+# Load balancer HTTPS offloading?
+variable "lb_https_offloading" {
+  description = "If true offload to HTTP"
+  default     = false
+}
+
 # Load balancer HTTP listener port
 variable "lb_http_listener_port" {
   description = "HTTP listener port of the loadbalancer"

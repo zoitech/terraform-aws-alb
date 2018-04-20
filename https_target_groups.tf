@@ -2,7 +2,7 @@
 resource "aws_lb_target_group" "tg_https" {
   # Check the number of https target group names matches the number of https target group ports.
   # If check is ok creates the number of https target group resources based on the number of https target group names
-  count = "${var.lb_https_listener ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}"
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}"
 
   ### Required Arguments ###
   name     = "${var.prefix}${element(var.https_target_group_names, count.index)}${var.suffix}" # default prefix/suffix = "". Default target group name = ["https-target-group"] N.B. 32 Character limit with prefix/suffix
@@ -35,7 +35,7 @@ resource "aws_lb_target_group" "tg_https" {
 
 # Attach target to https target group(s)
 resource "aws_lb_target_group_attachment" "attach_https_tg" {
-  count = "${var.lb_https_listener ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}"
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}"
 
   target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
   target_id        = "${var.target_id}"
