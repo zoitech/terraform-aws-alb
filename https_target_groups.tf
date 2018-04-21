@@ -33,11 +33,62 @@ resource "aws_lb_target_group" "tg_https" {
   }
 }
 
-# Attach target to https target group(s)
-resource "aws_lb_target_group_attachment" "attach_https_tg" {
-  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}"
+# Attach up to 8 targets to https target group(s)
+# aws_alb_target_group_attachment errors out when multiple instance id's used
+# Workaround until https://github.com/terraform-providers/terraform-provider-aws/issues/647 is solved
+resource "aws_lb_target_group_attachment" "attach_https_tg_target1" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 1 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
 
   target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
-  target_id        = "${var.target_id}"
+  target_id        = "${element(split(",", var.target_ids), 0)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target2" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 2 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 1)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target3" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 3 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 2)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target4" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 4 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 3)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target5" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 5 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 4)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target6" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 6 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 5)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target7" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 7 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 6)}"
+  port             = "${element(var.https_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_https_tg_target8" {
+  count = "${var.lb_https_listener ? "${!var.lb_https_offloading ? "${length(split(",", var.target_ids)) >= 8 ? "${length(var.https_target_group_names) == "${length(var.https_target_group_ports)}" ? "${length(var.https_target_group_names)}" : 0}" :0}" :0}" :0}"
+
+  target_group_arn = "${element(aws_lb_target_group.tg_https.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 7)}"
   port             = "${element(var.https_target_group_ports, count.index)}"
 }
