@@ -23,6 +23,10 @@ module "alb" {
   # Or to specifiy a particular module version:
   source = "git::https://github.com/zoitech/terraform-aws-alb.git?ref=v0.0.1"
 ```
+### Specify the Region to deploy to
+```hcl
+aws_region = "eu-west-1" #default = "eu-central-1"
+```
 ### Target Group Arguments
 The position of the values in each list corresponds to the value in the same position of the other list. E.g. a https request to "serv9.mysite.com" will be sent to the target group with name "Serv9-int-ssl" on port "10503".
 
@@ -160,13 +164,13 @@ A HTTP listener traffic in security group is created to allow HTTP traffic in on
 
 * "Rule-allow-${var.lb_source_traffic_name}-in-HTTP"
 
-The variable "lb_source_traffic_name" should be set to a location or department where the source traffic is coming from:
+The parameter "lb_source_traffic_name" should be set to a location or department where the source traffic is coming from:
 
 ```hcl
   lb_source_traffic_name = "Human-Resources"
 ```
 
-Alternatively the variable "var.lb_sg_http_name" can be set to fully customize the name of the security group. If this variable is set, "var.lb_source_traffic_name" is no longer required:
+Alternatively the parameter "lb_sg_http_name" can be set to fully customize the name of the security group. If this parameter is set, "lb_source_traffic_name" is no longer required:
 
 ```hcl
   lb_sg_http_name = "My-http-security-group-name"
@@ -177,27 +181,74 @@ The same applies for the HTTPS security group name:
   lb_sg_https_name = "My-https-security-group-name"
 ```
 
-By default **all IP addresses are permitted** for both the HTTP and HTTPS security group. To specify specific IP ranges (or CIDR blocks) set the following variables:
+By default **all IP addresses are permitted** for both the HTTP and HTTPS security group. To specify specific IP ranges (or CIDR blocks) set the following parameters:
 
 ```hcl
     rule_allow_lb_http_listener_traffic_in_cidr_blocks = ["172.16.0.0/16", "192.168.0.0/24"]
     rule_allow_lb_https_listener_traffic_in_cidr_blocks = ["172.16.0.0/16", "192.168.0.0/24"]
 ```
 
-#### Load Balancer Optional Arguments
+### Load Balancer Optional Arguments
+#### Additional Security Groups
 
 Additional security groups can be added to the load balancer:
 
 ```hcl
   lb_security_groups = ["sg-12345678", "sg-abc87654"]
 ```
+#### Idle Timeout, HTTP2 and Deletion Protection
 Idle timeout (default = 60) for the load balancer, defining if http2 is enabled (default = true) and enabling deletion protection (default = false) can also be set as follows:
 ```hcl
   lb_idle_timeout = 60
   lb_enable_http2 = true
   lb_enable_deletion_protection = false
-
 ```
+#### Access Logs
+To enable access logs for the load balancer, set the parameter "enable_alb_access_logs = true".  
+When set to true, the following parameters should also be configured as shown below:
+```hcl
+  enable_alb_access_logs = true #default = false
+  s3_log_bucket_name = "my-s3-log-bucket"
+  s3_log_bucket_Key_name = "alb-logs"
+  principle_account_id = "033677994240" #default = 054676820928 (frankfurt) See below for more information
+```
+To enable a lifecycle rule which will delete the log files after X days, use the following parameters:
+```hcl
+  lifecycle_rule_enabled = true #default = false
+  lifecycle_rule_id = "my_alb_log_expiration"
+  lifecycle_rule_expiration = 30 #default = 90
+```
+The account ID for the principle within the bucket policy needs to match the region to allow the load balancer to write the logs to the bucket.
+
+| Region          | Region Name               | Elastic Load Balancing Account ID  |
+| --------------- |:-------------------------:| ----------------------------------:|
+| us-east-1       | US East (N. Virginia)     | 127311923021                       |
+| us-east-2       | US East (Ohio)            | 033677994240                       |
+| us-west-1       | US West (N. California)   | 027434742980                       |
+| us-west-2       | US West (Oregon)          | 797873946194                       |
+| ca-central-1    | Canada (Central)          | 985666609251                       |
+| eu-central-1    | EU (Frankfurt)            | 054676820928                       |
+| eu-west-1       | EU (Ireland)              | 156460612806                       |
+| eu-west-2       | EU (London)               | 652711504416                       |
+| eu-west-3       | EU (Paris)                | 009996457667                       |
+| ap-northeast-1  | Asia Pacific (Tokyo)      | 582318560864                       |
+| ap-northeast-2  | Asia Pacific (Seoul))     | 600734575887                       |
+| ap-northeast-3  | Asia Pacific (Osaka-Local)| 383597477331                       |
+| ap-southeast-1  |	Asia Pacific (Singapore)  |	114774131450                       |
+| ap-southeast-2  |	Asia Pacific (Sydney)	    | 783225319266                       |
+| ap-south-1      |	Asia Pacific (Mumbai)	    | 718504428378                       |
+| sa-east-1	      | South America (São Paulo) | 507241528517                       |
+| us-gov-west-1\* |	AWS GovCloud (US)         |	048591011584                       |
+| cn-north-1 \*\* |	China (Beijing)           |	638102146993                       |
+| cn-northwest-1 \*\*|	China (Ningxia)       |	037604701340                       |
+
+\* This region requires a separate account. For more information, see AWS GovCloud (US).
+
+\*\* This region requires a separate account. For more information, see China (Beijing).
+
+For updated account IDs with corresponding regions, please refer to: https://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html#attach-bucket-policy
+
+
 ##### Prefixes and Suffixes (not Latin words ;-))
 Can be set when there is a standard naming convention in use. They are applied to the name of the load balancer and target group resources (default = null/empty)
 ```hcl
