@@ -66,12 +66,13 @@ https_health_check_matcher = "200-299" #default = 200 (Success codes)
 https_target_group_deregistration_delay = 30 #default = 300 (seconds)
 https_target_group_stickiness_enabled = true #default set to false
 https_target_group_stickiness_cookie_duration = 8640 #default 8640 seconds (1 day)
+```
 
-# VPC ID and the target instance are valid for both target groups and need only be set once:
-
+### VPC ID and Target Instance
+Are valid for both target groups and need only be set once. Multiple targets should be specified in a comma separated string without spaces. A maximum of 8 targets are currently supported in this module:
+```hcl
 vpc_id = "vpc-a01234bc"
-target_id = "i-00123456789123abc"
-
+target_id = "i-00123456789123aaa,i-00123456789123bbb,i-00123456789123ccc"
 ```
 
 
@@ -184,12 +185,13 @@ By default **all IP addresses are permitted** for both the HTTP and HTTPS securi
     rule_allow_lb_https_listener_traffic_in_cidr_blocks = ["172.16.0.0/16", "192.168.0.0/24"]
 ```
 
-#### Load Balancer Optional Arguments
+### Load Balancer Optional Arguments
+#### Adding Already Existing Security Groups
 
 Additional security groups can be added to the load balancer:
 
 ```hcl
-  lb_security_groups = ["sg-12345678", "sg-abc87654"]
+  lb_security_group_ids = ["sg-12345678", "sg-abc87654"]
 ```
 Idle timeout (default = 60) for the load balancer, defining if http2 is enabled (default = true) and enabling deletion protection (default = false) can also be set as follows:
 ```hcl

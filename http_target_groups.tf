@@ -35,11 +35,54 @@ resource "aws_lb_target_group" "tg_http" {
   #tags = https://github.com/hashicorp/terraform/issues/15226
 }
 
-# Attach target to http target group(s)
-resource "aws_lb_target_group_attachment" "attach_http_tg" {
-  count = "${var.lb_http_listener ? "${length(var.http_target_group_names) == "${length(var.http_target_group_ports)}" ? "${length(var.http_target_group_names)}" : 0}" :0}"
-
+# Attach up to 8 targets to http target group(s)
+# aws_alb_target_group_attachment errors out when multiple instance id's used
+# Workaround until https://github.com/terraform-providers/terraform-provider-aws/issues/647 is solved
+resource "aws_lb_target_group_attachment" "attach_http_tg_target1" {
+  count = "${local.http_target_id_1}"
   target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
-  target_id        = "${var.target_id}"
+  target_id        = "${element(split(",", var.target_ids), 0)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target2" {
+  count = "${local.http_target_id_2}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 1)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target3" {
+  count = "${local.http_target_id_3}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 2)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target4" {
+  count = "${local.http_target_id_4}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 3)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target5" {
+  count = "${local.http_target_id_5}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 4)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target6" {
+  count = "${local.http_target_id_6}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 5)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target7" {
+  count = "${local.http_target_id_7}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 6)}"
+  port             = "${element(var.http_target_group_ports, count.index)}"
+}
+resource "aws_lb_target_group_attachment" "attach_http_tg_target8" {
+  count = "${local.http_target_id_8}"
+  target_group_arn = "${element(aws_lb_target_group.tg_http.*.arn, count.index)}"
+  target_id        = "${element(split(",", var.target_ids), 7)}"
   port             = "${element(var.http_target_group_ports, count.index)}"
 }

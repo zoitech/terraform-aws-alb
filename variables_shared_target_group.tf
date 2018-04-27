@@ -1,5 +1,5 @@
-# HTTP/HTTPS target group ID
-variable "target_id" {
-  description = "Instance ID for the target group"
+# HTTP/HTTPS target group IDs
+variable "target_ids" {
+  description = "Instance IDs for the target group(s)"
   default     = ""
 }
