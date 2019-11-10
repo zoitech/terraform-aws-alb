@@ -1,14 +1,14 @@
 ### HTTP target group variables ###
 # HTTP target group names
 variable "http_target_group_names" {
-  type        = "list"
+  type        = list(string)
   description = "Name(s) of the http target group(s)"
-  default     = ["http-target-group"]                 #N.B. Target Group name acceptable characters: letters, digits or the dash
+  default     = ["http-target-group"] #N.B. Target Group name acceptable characters: letters, digits or the dash
 }
 
 # HTTP target group ports
 variable "http_target_group_ports" {
-  type        = "list"
+  type        = list(string)
   description = "Port(s) of the http target group(s)"
   default     = [80]
 }
@@ -16,14 +16,14 @@ variable "http_target_group_ports" {
 # HTTP target group degregistration delay
 variable "http_target_group_deregistration_delay" {
   description = "Deregistration delay for the http target group(s)"
-  default     = 300                                                 #Possible values in seconds: 0-3600
+  default     = 300 #Possible values in seconds: 0-3600
 }
 
 ##HTTP target group health checks
 # HTTP target group health check intveral
 variable "http_health_check_interval" {
   description = "Set HTTP health check interval"
-  default     = 30                               #min=5 max=300
+  default     = 30 #min=5 max=300
 }
 
 # HTTP target group health check path
@@ -47,7 +47,7 @@ variable "http_health_check_protocol" {
 # HTTP target group health check timeout
 variable "http_health_check_timeout" {
   description = "Set HTTP health check timeout"
-  default     = 5                               #min=2 max=60
+  default     = 5 #min=2 max=60
 }
 
 # HTTP target group health check healthy threshold
@@ -65,7 +65,7 @@ variable "http_health_check_unhealthy_threshold" {
 # HTTP target group health check  matcher
 variable "http_health_check_matcher" {
   description = "Set HTTP health check matcher"
-  default     = 200                             #Matcher aka success code. Range-example: 200-299
+  default     = 200 #Matcher aka success code. Range-example: 200-299
 }
 
 ## HTTP target group sticky cookie settings
@@ -78,5 +78,6 @@ variable "http_target_group_stickiness_enabled" {
 # HTTP cookie duration for stickiness if enabled
 variable "http_target_group_stickiness_cookie_duration" {
   description = "Cookie Duration for stickiness of the http target group(s)"
-  default     = 8640                                                         #Possible values 1-604800 (604800 = 1 day).
+  default     = 8640 #Possible values 1-604800 (604800 = 1 day).
 }
+

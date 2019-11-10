@@ -1,8 +1,9 @@
-data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {
+}
 
 # Account
 provider "aws" {
-  region = "${var.aws_region}"
+  region = var.aws_region
 }
 
 # Region
@@ -27,3 +28,4 @@ variable "suffix" {
   description = "A suffix which is added to each resource name."
   default     = ""
 }
+

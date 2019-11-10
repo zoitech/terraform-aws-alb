@@ -1,4 +1,16 @@
-## Release Version: 0.0.2
+## 1.0.0
+
+BACKWARDS INCOMPATIBILITIES / NOTES:
+
+*Terraform version 0.12.x
+
+NEW FEATURES:
+
+ENHANCEMENTS.
+
+' Upgraded module to terraform 0.12.x ([#10](https://github.com/zoitech/terraform-aws-saml/issues/10))
+
+## 0.0.2
 
 BACKWARDS INCOMPATIBILITIES / NOTES:
 

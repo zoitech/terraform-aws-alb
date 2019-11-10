@@ -1,6 +1,5 @@
 # AWS Application Load Balancer Module
-Terraform module which sets up an application load balancer with either a HTTP listener, a HTTPS listener or both, and one or more target groups as required.
-The idea behind this module is to support webservers hosting multiple sites for example a windows server running IIS.
+Terraform module which sets up an application load balancer with either a HTTP listener, a HTTPS listener or both, and one or more target groups as needed. Terraform version required is 0.12.x .
 
 The following resources are created:
 * Application load balancer (internal or external)
