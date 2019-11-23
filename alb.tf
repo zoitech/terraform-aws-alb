@@ -4,7 +4,7 @@ resource "aws_lb" "application_loadbalancer" {
   internal           = local.create_internal_lb
   load_balancer_type = "application"
   security_groups    = local.lb_security_groups
-  subnets            = local.lb_subnet_ids
+  subnets            = var.lb_subnet_ids
 
   ### Optional Arguments ###
   idle_timeout               = var.lb_idle_timeout

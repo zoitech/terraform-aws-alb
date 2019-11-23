@@ -18,14 +18,6 @@ locals {
   # Security groups
   lb_security_groups = concat([aws_security_group.lb_group.id], var.lb_security_group_ids)
 
-  # Subnet IDs
-  lb_private_subnet_ids = [var.lb_private_subnet_ids]
-  lb_public_subnet_ids  = [var.lb_public_subnet_ids]
-  lb_subnet_ids = [split(
-    ",",
-    var.lb_internal ? join(",", local.lb_private_subnet_ids) : join(",", local.lb_public_subnet_ids),
-  )]
-
   # HTTP target group attachment
   http_tg_attachment_conditionals = var.create_lb_http_listener == true ? length(var.http_target_group_parameters) : 0
   http_target_id_1                = length(split(",", var.target_ids)) >= 1 ? local.http_tg_attachment_conditionals : 0

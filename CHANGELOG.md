@@ -9,6 +9,7 @@ BACKWARDS INCOMPATIBILITIES / NOTES:
 Changed variable name of "lb_https_listener" to "create_lb_https_listener" ([#12](httpss://github.com/zoitech/terraform-aws-saml/issues/12))
 * Changed variable name of "lb_internal" to "create_internal_lb" ([#12](httpss://github.com/zoitech/terraform-aws-saml/issues/12))
 * Changed variabble name of "lb_https_offloading" to "enable_lb_https_offloading" ([#12](httpss://github.com/zoitech/terraform-aws-saml/issues/12))
+* Variables "lb_private_subnet_ids" and "lb_public_subnet_ids" replaced with "lb_subnet_ids"
 
 ENHANCEMENTS:
 

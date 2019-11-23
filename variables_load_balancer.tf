@@ -11,17 +11,10 @@ variable "lb_name" {
   default     = "loadbalancer"
 }
 
-# Load balancer public subnet groups
-variable "lb_public_subnet_ids" {
+# Load balancer subnet groups
+variable "lb_subnet_ids" {
   type        = list(string)
-  description = "The Public Subnet ID(s) which should be attached to the loadbalancer"
-  default     = []
-}
-
-# Load balancer private subnet groups
-variable "lb_private_subnet_ids" {
-  type        = list(string)
-  description = "The Private Subnet ID(s) which should be attached to the loadbalancer"
+  description = "The subnet ID(s) which should be attached to the loadbalancer"
   default     = []
 }
 
