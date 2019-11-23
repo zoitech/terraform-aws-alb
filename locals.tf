@@ -16,10 +16,6 @@ locals {
   ## https target groups
   create_tg_https = (var.create_lb_https_listener == true && var.enable_lb_https_offloading == false && var.https_target_group_parameters != null ? length(var.https_target_group_parameters : 0)
   # Security groups
-  lb_security_groups_for_http       = [aws_security_group.lb_group.id, aws_security_group.rule_all_out.id, aws_security_group.lb_http_listener_traffic_in.id, var.lb_security_group_ids]
-  lb_security_groups_for_https      = [aws_security_group.lb_group.id, aws_security_group.rule_all_out.id, aws_security_group.lb_https_listener_traffic_in.id, var.lb_security_group_ids]
-  lb_security_groups_for_http_https = [aws_security_group.lb_group.id, aws_security_group.rule_all_out.id, aws_security_group.lb_http_listener_traffic_in.id, aws_security_group.lb_https_listener_traffic_in.id, var.lb_security_group_ids]
-  #lb_security_groups                = [split(",", var.lb_http_listener ? var.lb_https_listener ? join(",", local.lb_security_groups_for_http_https) : join(",", local.lb_security_groups_for_http) : join(",", local.lb_security_groups_for_https), )]
   lb_security_groups = concat([aws_security_group.lb_group.id], var.lb_security_group_ids)
 
   # Subnet IDs
