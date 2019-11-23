@@ -4,3 +4,7 @@ variable "target_ids" {
   default     = ""
 }
 
+variable "tg_tags" {
+  description = "Tags for target groups"
+  type        = map()
+}

@@ -1,16 +1,18 @@
 ### HTTP target group variables ###
-# HTTP target group names
-variable "http_target_group_names" {
-  type        = list(string)
-  description = "Name(s) of the http target group(s)"
-  default     = ["http-target-group"] #N.B. Target Group name acceptable characters: letters, digits or the dash
-}
-
-# HTTP target group ports
-variable "http_target_group_ports" {
-  type        = list(string)
-  description = "Port(s) of the http target group(s)"
-  default     = [80]
+variable "http_target_group_parameters" {
+  #https://github.com/terraform-providers/terraform-provider-aws/pull/8268
+  type = list(object({
+    target_group = string
+    host_headers = list(string)
+    port         = number
+  }))
+  default = [
+    {
+      target_group = "default-http"
+      host_headers = ["default.com"]
+      port         = 80
+    }
+  ]
 }
 
 # HTTP target group degregistration delay
