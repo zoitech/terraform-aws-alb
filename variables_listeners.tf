@@ -12,7 +12,7 @@ variable "lb_https_listener" {
 }
 
 ## Load balancer HTTPS offloading?
-variable "lb_https_offloading" {
+variable "enable_lb_https_offloading" {
   description = "If true offload to HTTP"
   default     = true
 }
