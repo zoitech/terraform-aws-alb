@@ -1,6 +1,6 @@
 ## Load balancer variables
 # Load balancer internal or external
-variable "lb_internal" {
+variable "create_internal_lb" {
   description = "Define if the loadbalancer should be internal or not"
   default     = true
 }

@@ -1,7 +1,7 @@
 resource "aws_lb" "application_loadbalancer" {
   ### Required Arguments ###
   name               = "${var.prefix}${var.lb_name}${var.suffix}"
-  internal           = var.lb_internal
+  internal           = local.create_internal_lb
   load_balancer_type = "application"
   security_groups    = local.lb_security_groups
   subnets            = local.lb_subnet_ids

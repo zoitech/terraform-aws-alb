@@ -1,6 +1,6 @@
 # Load balancer listener variables
 ## Load balancer HTTP listener needed?
-variable "lb_http_listener" {
+variable "create_lb_http_listener" {
   description = "If true add a HTTP listener"
   default     = false
 }

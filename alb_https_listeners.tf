@@ -1,6 +1,6 @@
 # Create https listener for the loadbalancer if "var.lb_https_listener == true" and "var.lb_https_offloading == false"
 resource "aws_lb_listener" "application_loadbalancer_listener_https" {
-  count             = var.lb_https_listener ? false == var.lb_https_offloading ? 1 : 0 : 0
+  count             = local.create_lb_https_listener
   load_balancer_arn = aws_lb.application_loadbalancer.arn
   port              = var.lb_https_listener_port
   protocol          = "HTTPS"
@@ -15,8 +15,8 @@ resource "aws_lb_listener" "application_loadbalancer_listener_https" {
 
 # Create https listener rules
 resource "aws_lb_listener_rule" "https_host_based_routing" {
-  count = var.lb_https_listener ? false == var.lb_https_offloading ? length(var.https_host_headers) == length(var.http_target_group_names) ? length(var.https_host_headers) : 0 : 0 : 0
-
+  #count = var.lb_https_listener ? false == var.lb_https_offloading ? length(var.https_host_headers) == length(var.http_target_group_names) ? length(var.https_host_headers) : 0 : 0 : 0
+  count        = local.create_lb_https_listener_rules
   listener_arn = aws_lb_listener.application_loadbalancer_listener_https[0].arn
 
   action {
