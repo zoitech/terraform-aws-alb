@@ -23,7 +23,11 @@ resource "aws_lb_listener_rule" "http_host_based_routing" {
 
   condition {
     field  = "host-header"
-    values = element(var.http_host_headers, count.index)
+    values = lookup(element(var.http_target_group_parameters, count.index), "host_headers")
+  }
+
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
