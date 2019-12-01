@@ -25,16 +25,6 @@ variable "lb_security_group_ids" {
   default     = []
 }
 
-variable "lb_in_from_port" {
-  description = "The from port to allow load balancer traffic in to the instance"
-  default     = 80
-}
-
-variable "lb_in_to_port" {
-  description = "The to port to allow load balancer traffic in to the instance"
-  default     = 80
-}
-
 # Load balancer idle timeout
 variable "lb_idle_timeout" {
   description = "Idle timeout for the loadbalancer."
@@ -47,9 +37,31 @@ variable "lb_enable_http2" {
   default     = true
 }
 
+# Load balancer logs bucket
+variable "lb_logs_bucket_enabled" {
+  description = "Boolean to enable / disable access_logs"
+  default     = true
+}
+
+variable "lb_logs_bucket_name" {
+  description = "The S3 bucket name to store the logs in"
+  default     = ""
+}
+
+variable "lb_logs_bucket_prefix" {
+  description = "The S3 bucket prefix. Logs are stored in the root if not configured"
+  default     = ""
+}
+
 # Load balancer deletion protection
 variable "lb_enable_deletion_protection" {
   description = "Enable deletion protection"
   default     = false
 }
 
+# Tags
+variable "lb_tags" {
+  description = "Tags for the load balancer"
+  type        = map(string)
+  default     = {}
+}
