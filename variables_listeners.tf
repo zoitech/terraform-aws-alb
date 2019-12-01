@@ -6,7 +6,7 @@ variable "create_lb_http_listener" {
 }
 
 ## Load balancer HTTPS listener needed?
-variable "lb_https_listener" {
+variable "create_lb_https_listener" {
   description = "If true add a HTTPS listener"
   default     = false
 }
