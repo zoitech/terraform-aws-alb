@@ -7,6 +7,7 @@ variable "aws_region" {
 # VPC ID
 variable "vpc_id" {
   description = "The VPC ID in which the resources should be created."
+  default     = ""
 }
 
 # Prefix
