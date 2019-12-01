@@ -20,14 +20,28 @@ module "alb" {
   aws_region         = "eu-central-1"
   vpc_id             = "vpc-1234567b"
   prefix             = "p-dept.123-"
-  lb_name            = "my-load-balancer"
   suffix             = "-abc"
+  lb_name            = "my-load-balancer"
   create_internal_lb = true
   lb_security_group_ids   = ["sg-1524364d", "172625db"]
   lb_subnet_ids           = ["subnet-fd42536a", "subnet-98781bac"]
   create_lb_http_listener = true
   lb_http_listener_port   = 80
-  create_lb_http_listener_rules = true
+  http_target_group_parameters = [
+    {
+      target_group = "application-1-http"
+      host_headers = ["application-1.com"]
+      port         = 80
+    },
+    {
+      target_group = "application-2-http"
+      host_headers = ["application-2.com"]
+      port         = 10002
+    },
+  ]
+
+  create_lb_https_listener = true
+  lb_https_listener_port   = 443
   https_target_group_parameters = [
     {
       target_group = "application-1-https"
@@ -40,11 +54,8 @@ module "alb" {
       port         = 10002
     },
   ]
-  create_lb_https_listener = true
-  lb_https_listener_port = 443
   enable_lb_https_offloading = false
   certificate_arn = "arn:aws:acm:eu-central-1:xxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-  create_lb_https_listener_rules = true
 ```
 
 ### Health Checks
@@ -101,18 +112,18 @@ https_target_group_stickiness_enabled = true #default set to false
 https_target_group_stickiness_cookie_duration = 8640 #default 8640 seconds (1 day)
 ```
 
-
 #### Security Groups
 
-Two security groups are created by default.
+The following security groups are created (depending on whether a HTTP listener, HTTPS listener or both are in use).
 
 An empty security group is created and attached to the load balancer, which can be used later as the security group source in other security groups to allow traffic into the instance:
 
 * Group-ALB-${var.lb_name}
 
-The second security group uses the previously mentioned security group as the source, and is attached the target instances to allow traffic in:
+The HTTP and HTTPs security groups uses the previously mentioned security group as the source, and is attached to the target instances to allow traffic in:
 
-* tf-rule-alb-${var.prefix}${var.lb_name}-in-${var.lb_in_from_port}-${var.lb_in_to_port}
+* group_loadbalancer_in_http
+* group_loadbalancer_in_https
 
 ### Load Balancer Optional Arguments
 
@@ -132,30 +143,6 @@ The following outputs are available:
 * lb_arn_suffix (The ARN suffix for use with CloudWatch Metrics)
 * lb_dns_name (The DNS name of the load balancer)
 * lb_zone_id (The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record))
-
-Example usage:
-```hcl
-#The name of the LB
-output "lb_name" {
-  value = "${module.alb.lb_name}"
-}
-#The ARN of the load balancer
-output "lb_arn" {
-  value = "${module.alb.lb_arn}"
-}
-#The ARN suffix for use with CloudWatch Metrics
-output "lb_arn_suffix" {
-  value = "${module.alb.lb_arn_suffix}"
-}
-#The DNS name of the load balancer
-output "lb_dns_name" {
-  value = "${module.alb.lb_dns_name}"
-}
-#The canonical hosted zone ID of the load balancer (to be used in a Route 53 Alias record)
-output "lb_zone_id" {
-  value = "${module.alb.lb_zone_id}"
-}
-```
 
 ## Referencing a Tagged Version
 

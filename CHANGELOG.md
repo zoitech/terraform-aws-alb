@@ -15,7 +15,7 @@ ENHANCEMENTS:
 
 * Upgraded module to terraform 0.12.x ([#10](https://github.com/zoitech/terraform-aws-saml/issues/10))
 * Reduced security group complexity ([#13](https://github.com/zoitech/terraform-aws-saml/issues/13))
-* Specify the port ranges of the allowed load balancer traffic into the instance(s) with variables "lb_in_from_port" and "lb_in_to_port" ([#13](https://github.com/zoitech/terraform-aws-saml/issues/13))
+* Enabled access logs ([#7](https://github.com/zoitech/terraform-aws-saml/issues/7))
 
 ## 0.0.2
 
