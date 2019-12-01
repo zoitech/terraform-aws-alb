@@ -1,29 +1,31 @@
 ### HTTPS target group variables ###
-# HTTPS target group names
-variable "https_target_group_names" {
-  type        = "list"
-  description = "Name(s) of the https target group(s)"
-  default     = ["https-target-group"]                 #N.B. Target Group name acceptable characters: letters, digits or the dash
-}
-
-# HTTPS target group ports
-variable "https_target_group_ports" {
-  type        = "list"
-  description = "Port(s) of the https target group(s)"
-  default     = [443]
+variable "https_target_group_parameters" {
+  #https://github.com/terraform-providers/terraform-provider-aws/pull/8268
+  type = list(object({
+    target_group = string
+    host_headers = list(string)
+    port         = number
+  }))
+  default = [
+    {
+      target_group = "default-https"
+      host_headers = ["default.com"]
+      port         = 443
+    }
+  ]
 }
 
 # HTTPS target group degregistration delay
 variable "https_target_group_deregistration_delay" {
   description = "Deregistration delay for the https target group(s)"
-  default     = 300                                                  #Possible values in seconds: 0-3600
+  default     = 300 #Possible values in seconds: 0-3600
 }
 
 ##HTTPS target group health checks
 # HTTPS target group health check intveral
 variable "https_health_check_interval" {
   description = "Set HTTPS health check interval"
-  default     = 30                                #min=5 max=300
+  default     = 30 #min=5 max=300
 }
 
 # HTTPS target group health check path
@@ -47,7 +49,7 @@ variable "https_health_check_protocol" {
 # HTTPS target group health check timeout
 variable "https_health_check_timeout" {
   description = "Set HTTPS health check timeout"
-  default     = 5                                #min=2 max=60
+  default     = 5 #min=2 max=60
 }
 
 # HTTPS target group health check healthy threshold
@@ -65,7 +67,7 @@ variable "https_health_check_unhealthy_threshold" {
 # HTTPS target group health check  matcher
 variable "https_health_check_matcher" {
   description = "Set HTTPS health check matcher"
-  default     = 200                              #Matcher aka success code. Range-example: 200-299
+  default     = 200 #Matcher aka success code. Range-example: 200-299
 }
 
 ## HTTPS target group sticky cookie settings
@@ -78,5 +80,6 @@ variable "https_target_group_stickiness_enabled" {
 # HTTPS cookie duration for stickiness if enabled
 variable "https_target_group_stickiness_cookie_duration" {
   description = "Cookie Duration for stickiness of the https target group(s)"
-  default     = 8640                                                          #Possible values 1-604800 (604800 = 1 day).
+  default     = 8640 #Possible values 1-604800 (604800 = 1 day).
 }
+

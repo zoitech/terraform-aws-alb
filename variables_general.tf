@@ -1,10 +1,3 @@
-data "aws_caller_identity" "current" {}
-
-# Account
-provider "aws" {
-  region = "${var.aws_region}"
-}
-
 # Region
 variable "aws_region" {
   description = "The AWS region to run in."
@@ -14,6 +7,7 @@ variable "aws_region" {
 # VPC ID
 variable "vpc_id" {
   description = "The VPC ID in which the resources should be created."
+  default     = ""
 }
 
 # Prefix
@@ -27,3 +21,4 @@ variable "suffix" {
   description = "A suffix which is added to each resource name."
   default     = ""
 }
+
