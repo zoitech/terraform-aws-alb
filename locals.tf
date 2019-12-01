@@ -1,22 +1,26 @@
 locals {
   # load balancer
-  create_internal_lb = (var.create_internal_lb == true ? 1 : 0)
+  ## Security groups
+  create_sg_http_in      = (var.create_lb_http_listener == true ? 1 : 0)
+  create_sg_https_in     = (var.create_lb_https_listener == true ? 1 : 0)
+  create_sg_http_attach  = (var.create_lb_http_listener == true ? length(split(",", var.target_ids)) : 0)
+  create_sg_https_attach = (var.create_lb_https_listener == true ? length(split(",", var.target_ids)) : 0)
+  lb_security_groups     = concat([aws_security_group.lb_group.id], var.lb_security_group_ids)
 
   # load balancer listeners
   ## alb_http_listeners.tf
   create_lb_http_listener       = (var.create_lb_http_listener == true ? 1 : 0)
   create_lb_http_listener_rules = (var.create_lb_http_listener == true && var.http_target_group_parameters != null ? length(var.http_target_group_parameters) : 0)
   ## alb_https_listeners.tf
-  create_lb_https_listener = (var.create_lb_https_listener == true ? 1 : 0)
-  #create_lb_https_listener_rules = (var.create_lb_https_listener == true && var.https_target_group_parameters != null ? length(var.https_target_group_parameters) : 0)
+  create_lb_https_listener       = (var.create_lb_https_listener == true ? 1 : 0)
   create_lb_https_listener_rules = (var.create_lb_https_listener == true ? (var.enable_lb_https_offloading == true && var.http_target_group_parameters != null ? length(var.http_target_group_parameters) : (var.enable_lb_https_offloading == false && var.https_target_group_parameters != null ? length(var.https_target_group_parameters) : 0)) : 0)
+
   # target groups
   ## http target group
   create_tg_http = (var.create_lb_http_listener == true && var.http_target_group_parameters != null ? length(var.http_target_group_parameters) : 0)
   ## https target groups
-  create_tg_https = (var.create_lb_https_listener == true && var.enable_lb_https_offloading == false && var.https_target_group_parameters != null ? length(var.https_target_group_parameters : 0)
-  # Security groups
-  lb_security_groups = concat([aws_security_group.lb_group.id], var.lb_security_group_ids)
+  create_tg_https = (var.create_lb_https_listener == true && var.enable_lb_https_offloading == false && var.https_target_group_parameters != null ? length(var.https_target_group_parameters) : 0)
+
 
   # HTTP target group attachment
   http_tg_attachment_conditionals = var.create_lb_http_listener == true ? length(var.http_target_group_parameters) : 0
