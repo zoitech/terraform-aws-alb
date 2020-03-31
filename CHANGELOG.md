@@ -1,3 +1,7 @@
+## 1.0.2
+
+* Listener to redirect HTTP traffic ([#17](https://github.com/zoitech/terraform-aws-alb/issues/17))
+
 ## 1.0.1
 
 ENHANCEMENTS:
