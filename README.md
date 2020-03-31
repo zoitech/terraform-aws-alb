@@ -58,7 +58,7 @@ module "alb" {
   certificate_arn = "arn:aws:acm:eu-central-1:xxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
-Alternatively, to create a HTTP redirect listener to HTTPS:
+Alternatively, to create a HTTP redirect listener (defaults to HTTPS (443) if "lb_http_redirect_to_protocol" and "lb_http_redirect_to_port" are not configured) :
 
 ```hcl
 module "alb" {
