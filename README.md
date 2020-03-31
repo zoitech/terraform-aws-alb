@@ -30,12 +30,12 @@ module "alb" {
   http_target_group_parameters = [
     {
       target_group = "application-1-http"
-      host_headers = ["application-1.com"]
+      host_headers = ["application-1.com", "application-1-co.uk"]
       port         = 80
     },
     {
       target_group = "application-2-http"
-      host_headers = ["application-2.com"]
+      host_headers = ["application-2.com", "application-2.de"]
       port         = 10002
     },
   ]
@@ -45,12 +45,12 @@ module "alb" {
   https_target_group_parameters = [
     {
       target_group = "application-1-https"
-      host_headers = ["application-1.com"]
+      host_headers = ["application-1.com", "application-1-co.uk"]
       port         = 443
     },
     {
       target_group = "application-2-https"
-      host_headers = ["application-2.com"]
+      host_headers = ["application-2.com", "application-2.de"]
       port         = 10002
     },
   ]
@@ -148,7 +148,7 @@ The following outputs are available:
 
 ```hcl
 module "alb" {
-  source = "git::https://github.com/zoitech/terraform-aws-alb.git?ref=v1.0.0"
+  source = "git::https://github.com/zoitech/terraform-aws-alb.git?ref=v1.0.1"
 ```
 
 ## Authors

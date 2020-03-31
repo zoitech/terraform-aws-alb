@@ -24,7 +24,8 @@ resource "aws_lb_listener_rule" "https_host_based_routing" {
   }
 
   condition {
-    field  = "host-header"
-    values = (var.enable_lb_https_offloading == true ? lookup(element(var.http_target_group_parameters, count.index), "host_headers") : lookup(element(var.https_target_group_parameters, count.index), "host_headers"))
+    host_header {
+      values = (var.enable_lb_https_offloading == true ? lookup(element(var.http_target_group_parameters, count.index), "host_headers") : lookup(element(var.https_target_group_parameters, count.index), "host_headers"))
+    }
   }
 }
