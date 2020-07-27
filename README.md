@@ -58,6 +58,24 @@ module "alb" {
   certificate_arn = "arn:aws:acm:eu-central-1:xxxxxxxxxxx:certificate/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
 ```
 
+Alternatively, to create a HTTP redirect listener (defaults to HTTPS (443) if "lb_http_redirect_to_protocol" and "lb_http_redirect_to_port" are not configured) :
+
+```hcl
+module "alb" {
+  source                           = "git::https://github.com/zoitech/terraform-aws-alb.git"
+  aws_region                       = "eu-central-1"
+  vpc_id                           = "vpc-1234567b"
+  prefix                           = "p-dept.123-"
+  suffix                           = "-abc"
+  lb_name                          = "my-load-balancer"
+  create_internal_lb               = true
+  lb_subnet_ids                    = ["subnet-fd42536a", "subnet-98781bac"]
+  create_lb_http_redirect_listener = true
+  lb_http_redirect_listener_port   = 8080
+  lb_http_redirect_to_protocol     = "HTTP"
+  lb_http_redirect_to_port         = 80
+```
+
 ### Health Checks
 
 Health checks for all target groups can be set.

@@ -1,18 +1,15 @@
 ### HTTPS target group variables ###
 variable "https_target_group_parameters" {
   #https://github.com/terraform-providers/terraform-provider-aws/pull/8268
-  type = list(object({
-    target_group = string
-    host_headers = list(string)
-    port         = number
-  }))
-  default = [
-    {
-      target_group = "default-https"
-      host_headers = ["default.com"]
-      port         = 443
-    }
-  ]
+  type    = list(any)
+  default = null
+  # default = [
+  #   {
+  #     target_group = "default-https"
+  #     host_headers = ["default.com"]
+  #     port         = 443
+  #   }
+  # ]
 }
 
 # HTTPS target group degregistration delay

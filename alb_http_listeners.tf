@@ -32,3 +32,42 @@ resource "aws_lb_listener_rule" "http_host_based_routing" {
   }
 }
 
+# Create http redirect listener for the loadbalancer if "var.lb_http_redirect_listener == true"
+resource "aws_lb_listener" "application_loadbalancer_listener_http_redirect" {
+  count             = local.create_lb_http_redirect_listener
+  load_balancer_arn = aws_lb.application_loadbalancer.arn
+  port              = var.lb_http_redirect_listener_port
+  protocol          = "HTTP"
+
+  default_action {
+    type = "redirect"
+
+    redirect {
+      port        = var.lb_http_redirect_to_port
+      protocol    = var.lb_http_redirect_to_protocol
+      status_code = "HTTP_301"
+    }
+  }
+}
+
+# Redirect http 
+# resource "aws_lb_listener_rule" "redirect_http" {
+#   count        = local.create_lb_http_redirect_listener_rules
+#   listener_arn = aws_lb_listener.application_loadbalancer_listener_http_redirect[0].arn
+
+#   action {
+#     type = "redirect"
+
+#     redirect {
+#       port        = "443"
+#       protocol    = "HTTPS"
+#       status_code = "HTTP_301"
+#     }
+#   }
+
+#   condition {
+#     host_header {
+#       values = ["*.*"]
+#     }
+#   }
+# }
