@@ -2,7 +2,7 @@
 
 BUG FIX:
 
-* HTTPS with offloading
+* HTTPS with offloading ([#19](https://github.com/zoitech/terraform-aws-alb/issues/19))
 
 ## 1.0.2
 
