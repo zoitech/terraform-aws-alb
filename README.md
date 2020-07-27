@@ -166,7 +166,7 @@ The following outputs are available:
 
 ```hcl
 module "alb" {
-  source = "git::https://github.com/zoitech/terraform-aws-alb.git?ref=v1.0.1"
+  source = "git::https://github.com/zoitech/terraform-aws-alb.git?ref=v1.0.3"
 ```
 
 ## Authors

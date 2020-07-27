@@ -1,3 +1,9 @@
+## 1.0.3
+
+BUG FIX:
+
+* HTTPS with offloading ([#19](https://github.com/zoitech/terraform-aws-alb/issues/19))
+
 ## 1.0.2
 
 * Listener to redirect HTTP traffic ([#17](https://github.com/zoitech/terraform-aws-alb/issues/17))
