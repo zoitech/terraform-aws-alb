@@ -1,7 +1,7 @@
 # Security group "group" for loadbalancer with no rules. 
 #To be used in other security group rules to specify the loadblaancer as the source.
 resource "aws_security_group" "lb_group" {
-  name        = "Group-ALB-${var.lb_name}"
+  name        = "Group-ALB-${var.prefix}-${var.lb_name}"
   description = "Attach security group with loadbalancer name to loadbalancer with no rules"
   vpc_id      = var.vpc_id
 }
