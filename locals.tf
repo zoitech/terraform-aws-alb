@@ -3,7 +3,7 @@ locals {
   ## Security groups
   create_sg_http_in      = ((var.create_lb_http_listener == true || var.create_lb_https_listener == true && var.enable_lb_https_offloading == true) && var.http_target_group_parameters != null ? 1 : 0)
   create_sg_https_in     = (var.create_lb_https_listener == true && var.https_target_group_parameters != null ? 1 : 0)
-  create_sg_http_attach  = (var.create_lb_http_listener == true && var.http_target_group_parameters != null ? length(split(",", var.target_ids)) : 0)
+  create_sg_http_attach  = ((var.create_lb_http_listener == true || var.create_lb_https_listener == true && var.enable_lb_https_offloading == true) && var.http_target_group_parameters != null ? length(split(",", var.target_ids)) : 0)
   create_sg_https_attach = (var.create_lb_https_listener == true && var.https_target_group_parameters != null ? length(split(",", var.target_ids)) : 0)
   lb_security_groups     = concat([aws_security_group.lb_group.id], var.lb_security_group_ids)
 
@@ -27,7 +27,7 @@ locals {
 
 
   # HTTP target group attachment
-  http_tg_attachment_conditionals = var.create_lb_http_listener == true && var.http_target_group_parameters != null ? length(var.http_target_group_parameters) : 0
+  http_tg_attachment_conditionals = ((var.create_lb_http_listener == true || var.create_lb_https_listener == true && var.enable_lb_https_offloading == true) && var.http_target_group_parameters != null ? length(var.http_target_group_parameters) : 0)
   http_target_id_1                = length(split(",", var.target_ids)) >= 1 ? local.http_tg_attachment_conditionals : 0
   http_target_id_2                = length(split(",", var.target_ids)) >= 2 ? local.http_tg_attachment_conditionals : 0
   http_target_id_3                = length(split(",", var.target_ids)) >= 3 ? local.http_tg_attachment_conditionals : 0
