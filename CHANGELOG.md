@@ -1,3 +1,9 @@
+## 1.0.4
+
+ENHANCEMENTS:
+
+* The security group name for "lb_group" now includes the prefix
+
 ## 1.0.3
 
 BUG FIX:
