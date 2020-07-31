@@ -1,3 +1,8 @@
+## 1.0.5
+
+BUG FIX:
+
+* Security group "lb_group" adds an extra dash if its in the variable ([#23](https://github.com/zoitech/terraform-aws-alb/issues/23))
 ## 1.0.4
 
 ENHANCEMENTS:
